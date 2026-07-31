@@ -16,6 +16,8 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from validate_markdown import sanitize_markdown_content, validate_markdown_content
+
 
 def repo_root_from_script() -> Path:
     return Path(__file__).resolve().parent.parent
@@ -75,10 +77,22 @@ def main() -> int:
     staging_dir = (repo_root / args.staging_dir).resolve()
     docs_dir = (repo_root / args.docs_dir).resolve()
 
-    mapping = load_mapping(mapping_path)
-    markdown_content = build_markdown_document(mapping)
-    staged_path = write_to_staging_area(markdown_content, staging_dir)
-    published_path = publish_to_canonical(staged_path, docs_dir)
+    try:
+        mapping = load_mapping(mapping_path)
+        markdown_content = build_markdown_document(mapping)
+        sanitized_content, redacted_items = sanitize_markdown_content(markdown_content)
+        validation_errors = validate_markdown_content(sanitized_content)
+        if validation_errors:
+            raise ValueError("Documentation validation failed:\n- " + "\n- ".join(validation_errors))
+
+        if redacted_items:
+            print(f"Redacted sensitive values: {', '.join(redacted_items)}")
+
+        staged_path = write_to_staging_area(sanitized_content, staging_dir)
+        published_path = publish_to_canonical(staged_path, docs_dir)
+    except ValueError as exc:
+        print(f"Validation failed: {exc}", file=sys.stderr)
+        return 1
 
     print(f"Markdown generation completed. Staged at {staged_path}")
     print(f"Published to {published_path}")

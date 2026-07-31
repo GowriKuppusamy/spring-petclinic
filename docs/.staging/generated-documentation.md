@@ -34,14 +34,14 @@ The following endpoints were extracted from the repository analysis artifact.
 
 ### src/main/resources/application-mysql.properties
 - `database` = `mysql`
-- `spring.datasource.url` = `${MYSQL_URL:jdbc:mysql://localhost/petclinic}`
+- `spring.datasource.url` = `${MYSQL_URL:jdbc:[REDACTED]
 - `spring.datasource.username` = `${MYSQL_USER:petclinic}`
 - `spring.datasource.password` = `${MYSQL_PASS:petclinic}`
 - `spring.sql.init.mode` = `always`
 
 ### src/main/resources/application-postgres.properties
 - `database` = `postgres`
-- `spring.datasource.url` = `${POSTGRES_URL:jdbc:postgresql://localhost/petclinic}`
+- `spring.datasource.url` = `${POSTGRES_URL:jdbc:[REDACTED]
 - `spring.datasource.username` = `${POSTGRES_USER:petclinic}`
 - `spring.datasource.password` = `${POSTGRES_PASS:petclinic}`
 - `spring.sql.init.mode` = `always`
