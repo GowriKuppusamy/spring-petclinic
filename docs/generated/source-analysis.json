@@ -1,0 +1,268 @@
+{
+  "generatedAt": "2026-07-31T15:02:19.487846+00:00",
+  "repository": {
+    "name": "spring-petclinic",
+    "root": "."
+  },
+  "controllers": [
+    {
+      "file": "src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java",
+      "className": "OwnerController",
+      "basePath": null,
+      "endpoints": [
+        {
+          "method": "GET",
+          "path": "/owners/new"
+        },
+        {
+          "method": "GET",
+          "path": "/owners/find"
+        },
+        {
+          "method": "GET",
+          "path": "/owners"
+        },
+        {
+          "method": "GET",
+          "path": "/owners/{ownerId}/edit"
+        },
+        {
+          "method": "GET",
+          "path": "/owners/{ownerId}"
+        },
+        {
+          "method": "POST",
+          "path": "/owners/new"
+        },
+        {
+          "method": "POST",
+          "path": "/owners/{ownerId}/edit"
+        }
+      ]
+    },
+    {
+      "file": "src/main/java/org/springframework/samples/petclinic/owner/PetController.java",
+      "className": "PetController",
+      "basePath": "/owners/{ownerId}",
+      "endpoints": [
+        {
+          "method": "GET",
+          "path": "/owners/{ownerId}/pets/new"
+        },
+        {
+          "method": "GET",
+          "path": "/owners/{ownerId}/pets/{petId}/edit"
+        },
+        {
+          "method": "POST",
+          "path": "/owners/{ownerId}/pets/new"
+        },
+        {
+          "method": "POST",
+          "path": "/owners/{ownerId}/pets/{petId}/edit"
+        }
+      ]
+    },
+    {
+      "file": "src/main/java/org/springframework/samples/petclinic/owner/VisitController.java",
+      "className": "VisitController",
+      "basePath": null,
+      "endpoints": [
+        {
+          "method": "GET",
+          "path": "/owners/{ownerId}/pets/{petId}/visits/new"
+        },
+        {
+          "method": "POST",
+          "path": "/owners/{ownerId}/pets/{petId}/visits/new"
+        }
+      ]
+    },
+    {
+      "file": "src/main/java/org/springframework/samples/petclinic/system/CrashController.java",
+      "className": "CrashController",
+      "basePath": null,
+      "endpoints": [
+        {
+          "method": "GET",
+          "path": "/oups"
+        }
+      ]
+    },
+    {
+      "file": "src/main/java/org/springframework/samples/petclinic/system/WelcomeController.java",
+      "className": "WelcomeController",
+      "basePath": null,
+      "endpoints": [
+        {
+          "method": "GET",
+          "path": "/"
+        }
+      ]
+    },
+    {
+      "file": "src/main/java/org/springframework/samples/petclinic/vet/VetController.java",
+      "className": "VetController",
+      "basePath": null,
+      "endpoints": [
+        {
+          "method": "GET",
+          "path": "/vets.html"
+        },
+        {
+          "method": "GET",
+          "path": "/vets"
+        }
+      ]
+    }
+  ],
+  "configurationFiles": [
+    {
+      "file": "src/main/resources/application-mysql.properties",
+      "properties": [
+        {
+          "key": "database",
+          "value": "mysql",
+          "line": 2
+        },
+        {
+          "key": "spring.datasource.url",
+          "value": "${MYSQL_URL:jdbc:mysql://localhost/petclinic}",
+          "line": 3
+        },
+        {
+          "key": "spring.datasource.username",
+          "value": "${MYSQL_USER:petclinic}",
+          "line": 4
+        },
+        {
+          "key": "spring.datasource.password",
+          "value": "${MYSQL_PASS:petclinic}",
+          "line": 5
+        },
+        {
+          "key": "spring.sql.init.mode",
+          "value": "always",
+          "line": 7
+        }
+      ]
+    },
+    {
+      "file": "src/main/resources/application-postgres.properties",
+      "properties": [
+        {
+          "key": "database",
+          "value": "postgres",
+          "line": 2
+        },
+        {
+          "key": "spring.datasource.url",
+          "value": "${POSTGRES_URL:jdbc:postgresql://localhost/petclinic}",
+          "line": 3
+        },
+        {
+          "key": "spring.datasource.username",
+          "value": "${POSTGRES_USER:petclinic}",
+          "line": 4
+        },
+        {
+          "key": "spring.datasource.password",
+          "value": "${POSTGRES_PASS:petclinic}",
+          "line": 5
+        },
+        {
+          "key": "spring.sql.init.mode",
+          "value": "always",
+          "line": 7
+        }
+      ]
+    },
+    {
+      "file": "src/main/resources/application.properties",
+      "properties": [
+        {
+          "key": "database",
+          "value": "h2",
+          "line": 2
+        },
+        {
+          "key": "spring.sql.init.schema-locations",
+          "value": "classpath*:db/${database}/schema.sql",
+          "line": 3
+        },
+        {
+          "key": "spring.sql.init.data-locations",
+          "value": "classpath*:db/${database}/data.sql",
+          "line": 4
+        },
+        {
+          "key": "spring.thymeleaf.mode",
+          "value": "HTML",
+          "line": 7
+        },
+        {
+          "key": "spring.jpa.hibernate.ddl-auto",
+          "value": "none",
+          "line": 10
+        },
+        {
+          "key": "spring.jpa.open-in-view",
+          "value": "false",
+          "line": 11
+        },
+        {
+          "key": "spring.jpa.hibernate.naming.physical-strategy",
+          "value": "org.hibernate.boot.model.naming.PhysicalNamingStrategySnakeCaseImpl",
+          "line": 12
+        },
+        {
+          "key": "spring.jpa.properties.hibernate.default_batch_fetch_size",
+          "value": "16",
+          "line": 13
+        },
+        {
+          "key": "spring.messages.basename",
+          "value": "messages/messages",
+          "line": 16
+        },
+        {
+          "key": "management.endpoints.web.exposure.include",
+          "value": "*",
+          "line": 21
+        },
+        {
+          "key": "logging.level.org.springframework",
+          "value": "INFO",
+          "line": 24
+        },
+        {
+          "key": "spring.web.resources.cache.cachecontrol.max-age",
+          "value": "12h",
+          "line": 29
+        }
+      ]
+    }
+  ],
+  "buildMetadata": {
+    "buildFiles": [
+      "pom.xml",
+      "build.gradle"
+    ],
+    "javaVersion": "17",
+    "artifact": "spring-boot-starter-parent",
+    "group": "org.springframework.samples"
+  },
+  "relevantFiles": [
+    "src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java",
+    "src/main/java/org/springframework/samples/petclinic/owner/PetController.java",
+    "src/main/java/org/springframework/samples/petclinic/owner/VisitController.java",
+    "src/main/java/org/springframework/samples/petclinic/system/CrashController.java",
+    "src/main/java/org/springframework/samples/petclinic/system/WelcomeController.java",
+    "src/main/java/org/springframework/samples/petclinic/vet/VetController.java",
+    "src/main/resources/application-mysql.properties",
+    "src/main/resources/application-postgres.properties",
+    "src/main/resources/application.properties",
+    "pom.xml",
+    "build.gradle"
+  ]
+}
