@@ -26,8 +26,11 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Generate documentation scaffolding
-        run: python scripts/generate_documentation.py
+      - name: Run documentation generation pipeline
+        run: |
+          python scripts/analyze_source.py
+          python scripts/map_content.py
+          python scripts/render_markdown.py --trigger-source ci
 
       - name: Upload documentation artifacts
         uses: actions/upload-artifact@v4

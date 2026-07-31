@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import traceback
 from pathlib import Path
 from typing import Any
 
@@ -120,8 +121,9 @@ def main() -> int:
         print(f"Markdown generation completed. Staged at {staged_path}")
         print(f"Published to {published_path}")
         return 0
-    except (RuntimeError, ValueError) as exc:
-        error_message = str(exc)
+    except Exception as exc:
+        error_message = f"Unexpected error during documentation generation: {exc}"
+        traceback.print_exc()
         summary = build_run_summary(
             trigger_source=args.trigger_source,
             processed_files=processed_files,
@@ -136,7 +138,7 @@ def main() -> int:
         )
         write_run_summary(summary, summary_path)
         emit_ci_status("failed", summary)
-        print(f"Publication failed: {error_message}", file=sys.stderr)
+        print(error_message, file=sys.stderr)
         return 1
 
 
