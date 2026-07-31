@@ -30,7 +30,7 @@ def load_mapping(mapping_path: Path) -> dict[str, Any]:
 
 def build_markdown_document(mapping: dict[str, Any]) -> str:
     title = "# Automated Documentation Sync"
-    intro = "\nThis document is generated from the repository analysis and content mapping artifacts."
+    intro = "This document is generated from the repository analysis and content mapping artifacts."
     sections = [
         mapping.get("apiReference", "## API Reference\n\nNo API reference content was provided."),
         mapping.get("setupInstructions", "## Setup and Installation\n\nNo setup instructions were provided."),
