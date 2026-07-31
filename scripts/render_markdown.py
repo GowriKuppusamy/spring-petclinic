@@ -11,11 +11,11 @@ from __future__ import annotations
 
 import argparse
 import json
-import shutil
 import sys
 from pathlib import Path
 from typing import Any
 
+from publish_documentation import publish_to_canonical, write_to_staging_area
 from validate_markdown import sanitize_markdown_content, validate_markdown_content
 
 
@@ -37,20 +37,6 @@ def build_markdown_document(mapping: dict[str, Any]) -> str:
         mapping.get("changelog", "## Change History\n\nNo changelog content was provided."),
     ]
     return "\n\n".join([title, intro, *sections]) + "\n"
-
-
-def write_to_staging_area(markdown_content: str, staging_dir: Path) -> Path:
-    staging_dir.mkdir(parents=True, exist_ok=True)
-    target_path = staging_dir / "generated-documentation.md"
-    target_path.write_text(markdown_content, encoding="utf-8")
-    return target_path
-
-
-def publish_to_canonical(staging_path: Path, docs_dir: Path) -> Path:
-    docs_dir.mkdir(parents=True, exist_ok=True)
-    canonical_path = docs_dir / "generated-documentation.md"
-    shutil.copyfile(staging_path, canonical_path)
-    return canonical_path
 
 
 def main() -> int:
@@ -90,8 +76,8 @@ def main() -> int:
 
         staged_path = write_to_staging_area(sanitized_content, staging_dir)
         published_path = publish_to_canonical(staged_path, docs_dir)
-    except ValueError as exc:
-        print(f"Validation failed: {exc}", file=sys.stderr)
+    except (RuntimeError, ValueError) as exc:
+        print(f"Publication failed: {exc}", file=sys.stderr)
         return 1
 
     print(f"Markdown generation completed. Staged at {staged_path}")
