@@ -1,0 +1,36 @@
+name: Automated Documentation Sync
+
+on:
+  push:
+    paths:
+      - 'src/**'
+      - 'pom.xml'
+      - 'build.gradle'
+      - 'settings.gradle'
+      - 'README.md'
+      - 'docs/**'
+      - 'scripts/**'
+      - '.github/workflows/automated-documentation-sync.yml'
+  workflow_dispatch:
+
+jobs:
+  generate-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Generate documentation scaffolding
+        run: python scripts/generate_documentation.py
+
+      - name: Upload documentation artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: documentation-output
+          path: docs/
