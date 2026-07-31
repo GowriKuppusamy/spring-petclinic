@@ -17,6 +17,7 @@ from typing import Any
 
 from publish_documentation import publish_to_canonical, write_to_staging_area
 from validate_markdown import sanitize_markdown_content, validate_markdown_content
+from workflow_logging import build_run_summary, emit_ci_status, write_run_summary
 
 
 def repo_root_from_script() -> Path:
@@ -56,12 +57,38 @@ def main() -> int:
         default="docs",
         help="Canonical docs output directory",
     )
+    parser.add_argument(
+        "--trigger-source",
+        default="manual",
+        help="Source of the documentation generation run",
+    )
+    parser.add_argument(
+        "--processed-files",
+        default="",
+        help="Comma-separated list of processed files for the run summary",
+    )
+    parser.add_argument(
+        "--summary-path",
+        default="docs/run-summary.json",
+        help="Path to the run summary artifact",
+    )
     args = parser.parse_args()
 
     repo_root = repo_root_from_script()
     mapping_path = (repo_root / args.mapping).resolve()
     staging_dir = (repo_root / args.staging_dir).resolve()
     docs_dir = (repo_root / args.docs_dir).resolve()
+    summary_path = (repo_root / args.summary_path).resolve()
+
+    processed_files = [item.strip() for item in args.processed_files.split(",") if item.strip()]
+    if not processed_files:
+        processed_files = [str(mapping_path.relative_to(repo_root).as_posix())]
+
+    summary: dict[str, object] | None = None
+    staged_path: Path | None = None
+    published_path: Path | None = None
+    redacted_items: list[str] = []
+    validation_errors: list[str] = []
 
     try:
         mapping = load_mapping(mapping_path)
@@ -76,13 +103,41 @@ def main() -> int:
 
         staged_path = write_to_staging_area(sanitized_content, staging_dir)
         published_path = publish_to_canonical(staged_path, docs_dir)
-    except (RuntimeError, ValueError) as exc:
-        print(f"Publication failed: {exc}", file=sys.stderr)
-        return 1
 
-    print(f"Markdown generation completed. Staged at {staged_path}")
-    print(f"Published to {published_path}")
-    return 0
+        summary = build_run_summary(
+            trigger_source=args.trigger_source,
+            processed_files=processed_files,
+            output_location=str(published_path),
+            status="success",
+            message="Documentation generation completed successfully.",
+            redacted_items_count=len(redacted_items),
+            validation_errors_count=len(validation_errors),
+            sections_present_count=4,
+            output_bytes=len(sanitized_content.encode("utf-8")),
+        )
+        write_run_summary(summary, summary_path)
+        emit_ci_status("success", summary)
+        print(f"Markdown generation completed. Staged at {staged_path}")
+        print(f"Published to {published_path}")
+        return 0
+    except (RuntimeError, ValueError) as exc:
+        error_message = str(exc)
+        summary = build_run_summary(
+            trigger_source=args.trigger_source,
+            processed_files=processed_files,
+            output_location=str(published_path or docs_dir),
+            status="failed",
+            message="Documentation generation failed.",
+            errors=[error_message],
+            redacted_items_count=len(redacted_items),
+            validation_errors_count=len(validation_errors),
+            sections_present_count=0,
+            output_bytes=0,
+        )
+        write_run_summary(summary, summary_path)
+        emit_ci_status("failed", summary)
+        print(f"Publication failed: {error_message}", file=sys.stderr)
+        return 1
 
 
 if __name__ == "__main__":

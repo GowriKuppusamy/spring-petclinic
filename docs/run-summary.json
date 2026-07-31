@@ -1,0 +1,17 @@
+{
+  "timestamp_utc": "2026-07-31T15:48:39.160503+00:00",
+  "trigger_source": "ci",
+  "processed_files": [
+    "docs/generated/content-mapping.json"
+  ],
+  "output_location": "C:\\Users\\GowriKuppusamy\\Desktop\\Capstone\\AgenticSDLC\\spring-petclinic\\docs\\generated-documentation.md",
+  "status": "success",
+  "message": "Documentation generation completed successfully.",
+  "errors": [],
+  "summary_counts": {
+    "redacted_items": 1,
+    "validation_errors": 0,
+    "sections_present": 4,
+    "output_bytes": 4166
+  }
+}
