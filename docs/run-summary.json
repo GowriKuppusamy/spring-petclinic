@@ -1,6 +1,6 @@
 {
-  "timestamp_utc": "2026-07-31T15:48:39.160503+00:00",
-  "trigger_source": "ci",
+  "timestamp_utc": "2026-08-03T05:51:09.175364+00:00",
+  "trigger_source": "manual",
   "processed_files": [
     "docs/generated/content-mapping.json"
   ],
@@ -12,6 +12,6 @@
     "redacted_items": 1,
     "validation_errors": 0,
     "sections_present": 4,
-    "output_bytes": 4166
+    "output_bytes": 4165
   }
 }
